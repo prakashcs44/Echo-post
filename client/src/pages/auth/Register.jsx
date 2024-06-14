@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { register } from "@/redux/slices/authSlice";
+import { register,clearStatus } from "@/redux/slices/authSlice";
 import toast from "react-hot-toast";
 
 function Register() {
@@ -23,7 +23,8 @@ function Register() {
         navigate("/home",{replace:true});
       }
       if(error){
-        toast.error(error)
+        toast.error(error);
+        dispatch(clearStatus());
       }
   },[isAuthenticated])
 

@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { login } from "@/redux/slices/authSlice";
+import { login,clearStatus } from "@/redux/slices/authSlice";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+
 function Login() {
 
  const [email,setEmail] = useState("");
@@ -15,10 +16,12 @@ function Login() {
  useEffect(()=>{
    if(isAuthenticated){
       toast.success("Logged in successfully");
+      
       navigate("/home",{replace:true});
    }
    if(error){
     toast.error(error);
+    dispatch(clearStatus());
    }
  },[isAuthenticated])
 
