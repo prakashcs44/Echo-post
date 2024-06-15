@@ -80,7 +80,7 @@ function Login() {
                 />
               </div>
               <Button variant = "ghost" className="flex items-center justify-center"
-              onClick = {()=>dispatch(login({email:"prakash@gmail.com",password:"prakash123"}))}
+              onClick = {()=>dispatch(login({email:"demo@gmail.com",password:"12345678"}))}
               >
               
               
