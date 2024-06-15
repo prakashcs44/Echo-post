@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
          cb(null,upload_folder);
     },
     filename:function(req,file,cb){
-        cb(null, Date.now()+"-"+file.originalname);
+        cb(null, Date.now()+"-"+file.originalname.trim().replace(/\s+/g, "_"));
     }
 })
 
