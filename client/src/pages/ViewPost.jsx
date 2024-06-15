@@ -48,6 +48,7 @@ function ViewPost() {
         <h1 className="font-bold text-2xl border-b border-black pb-2 w-3/4 text-center ">Comments</h1>
         <div className='space-y-8 w-full px-5'>
              {post?.comments.map(comment=><Comment comment = {comment}/>)}
+             {post?.comments.length===0&&<h1 className='text-center font-medium text-xl py-5'>No Comments Found</h1>}
         </div>
       </div>
     </PageWrapper>
