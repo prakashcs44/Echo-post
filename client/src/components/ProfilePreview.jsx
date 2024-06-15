@@ -11,7 +11,7 @@ function ProfilePreview({ user, onFollowing }) {
       <div className="flex gap-3 items-center font-medium">
         <img
           src={user?.avatar || defaultUserImg}
-          className="rounded-full size-14"
+          className="rounded-full size-14 object-cover"
         />
         <Link to={`/user/${user?._id}`} className="hover:underline">{user?.name}</Link>
       </div>
