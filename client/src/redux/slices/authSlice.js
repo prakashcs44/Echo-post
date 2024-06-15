@@ -23,6 +23,7 @@ const authSlice = createSlice({
     reducers: {
         clearStatus: (state) => {
             state.status = "idle";
+            state.error = "";
         },
         updateFollowing:(state,action)=>{
             state.userData.following = action.payload;
