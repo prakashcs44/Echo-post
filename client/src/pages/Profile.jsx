@@ -83,6 +83,7 @@ function Profile() {
         </h1>
         <div className=" py-5 space-y-10 w-full px-5 ">
           {user?.posts.map(post=><Post post={post} key={post._id}/>)}
+          {user?.posts.length===0&&<h1 className='text-center font-medium text-xl py-5'>No Post Found</h1>}
         </div>
       </div>
     </PageWrapper>
