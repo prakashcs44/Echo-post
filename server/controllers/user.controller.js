@@ -14,20 +14,18 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("User with this email already exists"));
   }
 
-  
+  const newUser = { name, email, password };
+
+  if (avatar) {
     const mycloud = await cloudinary.v2.uploader.upload(avatar, {
       folder: "echo_post_user_avatars",
       width: 150,
       crop: "scale",
     });
-  
+    newUser.avatar = { public_id: mycloud.public_id, url: mycloud.secure_url };
+  }
 
-  const user = await User.create({
-    name,
-    email,
-    password,
-    avatar: { public_id: mycloud.public_id, url: mycloud.secure_url },
-  });
+  const user = await User.create(newUser);
 
   return sendToken(user, 201, res);
 });
@@ -48,8 +46,6 @@ exports.loginUser = catchAsyncError(async (req, res, next) => {
   if (!isPasswordMatched) {
     return next(new ErrorHandler("Invalid email or password"), 401);
   }
-
- 
 
   return sendToken(user, 200, res);
 });
@@ -85,11 +81,7 @@ exports.getUserDetails = catchAsyncError(async (req, res, next) => {
     .populate("user", "name avatar email")
     .lean();
 
- 
-
   user.posts = posts;
-
-
 
   res.status(200).json({
     success: true,
@@ -117,11 +109,11 @@ exports.updatePassword = catchAsyncError(async (req, res, next) => {
 });
 
 exports.updateProfile = catchAsyncError(async (req, res, next) => {
-  const { name, email, location, bio, interests,avatar } = req.body;
+  const { name, email, location, bio, interests, avatar } = req.body;
 
   const newUserData = { email, name, interests, location, bio };
-  
-  if (avatar&&avatar!=="null"&&avatar !== "") {
+
+  if (avatar && avatar !== "null" && avatar !== "") {
     const user = await User.findById(req.user._id);
 
     const imageId = user.avatar.public_id;
@@ -140,22 +132,17 @@ exports.updateProfile = catchAsyncError(async (req, res, next) => {
     };
   }
 
-
   const user = await User.findByIdAndUpdate(req.user._id, newUserData, {
     new: true,
     runValidators: true,
     useFindAndModify: true,
   });
 
-  
-
   res.status(200).json({
     success: true,
     user,
   });
 });
-
-
 
 exports.getFollowing = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
@@ -167,7 +154,6 @@ exports.getFollowing = catchAsyncError(async (req, res, next) => {
 
   await user.populate("following", "name avatar");
 
- 
   res.status(200).json({
     success: true,
     following: user.following,
@@ -183,8 +169,6 @@ exports.getFollowers = catchAsyncError(async (req, res, next) => {
   }
 
   await user.populate("followers", "name avatar");
-
-  
 
   res.status(200).json({
     success: true,
