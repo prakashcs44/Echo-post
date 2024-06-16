@@ -4,7 +4,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import defaultUserImg from "../../assets/default_user.jpg";
 import { Button } from "../ui/button";
 import { Link} from "react-router-dom";
 import { IoExitOutline } from "react-icons/io5";
@@ -15,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout, clearStatus } from "@/redux/slices/authSlice";
 import toast from "react-hot-toast";
 import Loader from "../ui/Loader";
+import { Avatar,AvatarImage,AvatarFallback } from "../ui/avatar";
 
 function SideBar() {
   const [open, setOpen] = useState(false);
@@ -67,19 +67,17 @@ function Header() {
 
       <Popover>
         <PopoverTrigger>
-          <img
-            src={userData.avatar.url || defaultUserImg}
-            alt="user"
-            className=" size-12 rounded-full object-cover"
-          />
+        <Avatar>
+          <AvatarImage src = {userData?.avatar.url}/>
+          <AvatarFallback>{userData?.name[0]}</AvatarFallback>
+        </Avatar>
         </PopoverTrigger>
         <PopoverContent className=" mr-4 md:mr-8 flex flex-col items-center gap-4">
           <div className="flex flex-col items-center">
-            <img
-              src={userData.avatar.url || defaultUserImg}
-              alt="user"
-              className=" size-12 rounded-full object-cover"
-            />
+          <Avatar>
+          <AvatarImage src = {userData?.avatar.url}/>
+          <AvatarFallback>{userData?.name[0]}</AvatarFallback>
+        </Avatar>
             <Link to={`/user/${userData._id}`} className="font-medium hover:underline">
               {userData.name}
             </Link>

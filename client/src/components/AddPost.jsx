@@ -3,13 +3,14 @@ import MyDialog from "./MyDialog";
 import { Button } from "./ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { addPost,clearStatus } from "@/redux/slices/postSlice";
-import toast from "react-hot-toast";
+import { ADDING_POST_FAIL, ADDING_POST_PENDING, ADDING_POST_SUCCESS } from "@/redux/constants/postConstants";
+
 
 
 function AddPost() {
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState("");
-  const { status, error } = useSelector((state) => state.post);
+  const { status } = useSelector((state) => state.post);
   const dispatch = useDispatch();
 
   const sharePostHandler = async (ev) => {
@@ -19,8 +20,11 @@ function AddPost() {
     setContent("");
   };
 
+
+ 
+
   useEffect(()=>{
-   if(status==="success"||status==="fail"){
+   if(status===ADDING_POST_SUCCESS||status===ADDING_POST_FAIL){
     setOpen(false);
     dispatch(clearStatus());
    
@@ -45,16 +49,10 @@ function AddPost() {
           onChange={(ev) => setContent(ev.target.value)}
         />
         <div className="space-x-5">
-          <Button type="submit" disabled={status === "pending"}>
-            {status === "pending" ? "Sharing.." : "Share"}
+          <Button type="submit" disabled={status === ADDING_POST_PENDING}>
+            {status === ADDING_POST_PENDING ? "Sharing.." : "Share"}
           </Button>
-          <Button
-            type="button"
-            variant="destructive-outline"
-            onClick={() => setOpen(false)}
-          >
-            Cancel
-          </Button>
+         
         </div>
       </form>
     </MyDialog>

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { addPostApi, getAllPostApi} from "../api/postApi";
+import { ADDING_POST_FAIL, ADDING_POST_PENDING, ADDING_POST_SUCCESS, GETTING_POSTS_FAIL, GETTING_POSTS_PENDING, GETTING_POSTS_SUCCESS } from "../constants/postConstants";
 
 
 
@@ -25,23 +26,26 @@ const postSlice = createSlice({
     },
     extraReducers:(builder)=>{
         builder.addCase(getAllPost.pending,(state,action)=>{
-            state.status = "pending";
+            state.status = GETTING_POSTS_PENDING;
         })
         .addCase(getAllPost.fulfilled,(state,action)=>{
-            state.status = "success";
+            state.status = GETTING_POSTS_SUCCESS;
             state.posts = action.payload.posts;
         })
         .addCase(getAllPost.rejected,(state,action)=>{
-            state.status = "fail";
+            state.status = GETTING_POSTS_FAIL;
             state.posts = [];
             state.error = action.error.message;
         })
         .addCase(addPost.pending,(state,action)=>{
-            state.status = "pending";
+            state.status = ADDING_POST_PENDING;
         })
         .addCase(addPost.fulfilled,(state,action)=>{
-            state.status = "success";
-            state.posts = [...state.posts,action.payload.post];
+            state.status = ADDING_POST_SUCCESS;
+            state.posts = [action.payload.post,...state.posts];
+        })
+        .addCase(addPost.rejected,(state,action)=>{
+            state.status = ADDING_POST_FAIL
         })
 
     }

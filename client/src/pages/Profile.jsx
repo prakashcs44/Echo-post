@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import Follow from "@/components/Follow";
 import EditProfile from "@/components/EditProfile";
 import { dayMonthYear } from "@/helpers/dateHelper";
+import { Avatar,AvatarImage,AvatarFallback } from "@/components/ui/avatar";
 
 function Profile() {
   const { id } = useParams();
@@ -52,10 +53,10 @@ function Profile() {
       </div>
       <div className="flex justify-between pl-2 md:px-5  py-5">
         <div className=" -translate-y-20">
-          <img
-            src={user?.avatar.url || defaultUserImg}
-            className="rounded-full size-24 md:size-36 object-cover"
-          />
+        <Avatar className = "size-32 md:size-36">
+          <AvatarImage src = {user?.avatar.url}/>
+          <AvatarFallback className = "text-3xl">{user?.name[0]}</AvatarFallback>
+        </Avatar>
           <h1 className="font-bold text-lg">{user?.name}</h1>
           <p className="py-3 font-medium">{user?.bio}</p>
           <span className="flex gap-2 items-center">

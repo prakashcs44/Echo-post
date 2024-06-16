@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { FiCamera } from "react-icons/fi";
 import { clearStatus, updateProfile } from "@/redux/slices/authSlice";
+import { Avatar,AvatarImage,AvatarFallback } from "./ui/avatar";
 
 function EditProfile() {
   const { userData,status,error } = useSelector((state) => state.auth);
@@ -70,11 +71,10 @@ function EditProfile() {
         onSubmit={saveHandler}
       >
         <div className="relative">
-          <img
-            src={avatarPreview}
-            alt={name}
-            className="rounded-full size-40 object-cover"
-          />
+        <Avatar className = "size-40">
+          <AvatarImage src = {avatarPreview}/>
+          <AvatarFallback className = "text-3xl ">{userData?.name[0]}</AvatarFallback>
+        </Avatar>
           {!avatar && (
             <>
               <input

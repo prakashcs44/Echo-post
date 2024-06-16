@@ -1,21 +1,20 @@
 import React from "react";
-import profileImg from "../assets/default_user.jpg";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import AddComment from "./AddComment";
 import AddLike from "./AddLike";
 import { timeAgo, dayMonthYear } from "@/helpers/dateHelper";
+import { Avatar,AvatarImage,AvatarFallback } from "./ui/avatar";
 
 function Post({ disableView, post }) {
   
   return (
     <div className=" mx-auto transition-all  border pl-3 pt-2">
       <header className="flex gap-4">
-        <img
-          src={post?.user.avatar.url || profileImg}
-          alt="user"
-          className=" size-12 rounded-full object-cover"
-        />
+      <Avatar>
+          <AvatarImage src = {post?.user.avatar.url}/>
+          <AvatarFallback>{post?.user.name[0]}</AvatarFallback>
+        </Avatar>
         <div>
           <Link
             to={`/user/${post?.user._id}`}

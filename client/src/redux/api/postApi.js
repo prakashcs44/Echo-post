@@ -3,6 +3,8 @@ import axiosClient from "@/axiosClient";
 export const getAllPostApi = async()=>{
     const link  = "/posts";
 
+   
+
     try{
         const res =  await axiosClient.get(link);
         return res.data;

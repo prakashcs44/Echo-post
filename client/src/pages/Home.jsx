@@ -5,6 +5,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import noDataImg from "../assets/no_data.jpg";
 import PageWrapper from "@/components/layout/PageWrapper";
+import { GETTING_POSTS_PENDING } from "@/redux/constants/postConstants";
 
 function Home() {
   const { posts, status } = useSelector((state) => state.post);
@@ -14,7 +15,7 @@ function Home() {
     dispatch(getAllPost());
   }, []);
 
-  if (status === "pending") {
+  if (status === GETTING_POSTS_PENDING) {
     return <Loader />;
   }
 
