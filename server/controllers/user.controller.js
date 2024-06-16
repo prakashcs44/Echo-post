@@ -79,7 +79,7 @@ exports.getUserDetails = catchAsyncError(async (req, res, next) => {
 
   let posts = await Post.find({ user: id })
     .populate("user", "name avatar email")
-    .lean();
+    .sort({createdAt:-1});
 
   user.posts = posts;
 
