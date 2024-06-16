@@ -40,22 +40,20 @@ exports.getPost = catchAsyncError(async (req, res, next) => {
 
 exports.addPost = catchAsyncError(async (req, res, next) => {
   const { content,file } = req.body;
-   
- 
+   const newPost = {content,user:req.user._id};
+
+     if(file&&file!==""){
      const mycloud = await cloudinary.v2.uploader.upload(file,{
       folder:"echo_post_user_files",
       width:150,
       crop:"scale"
      })
+     newPost.file = {public_id:mycloud.public_id,url:mycloud.secure_url};
+    }
   
 
   let post = await Post.create({
-    content,
-    user: req.user._id,
-    file:{
-      public_id:mycloud.public_id,
-      url:mycloud.secure_url
-    }
+   newPost
   });
 
   post = await post.populate("user", "name avatar");
