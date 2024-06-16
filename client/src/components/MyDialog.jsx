@@ -5,9 +5,9 @@ import {
     DialogTrigger,
   } from "@/components/ui/dialog"
   
-function MyDialog({dialogTrigger,children,open,setOpen}) {
+function MyDialog({dialogTrigger,children,open,onOpenChange}) {
   return (
-    <Dialog open = {open} onOpenChange={(state)=>setOpen?.(state)}>
+    <Dialog open = {open} onOpenChange={(state)=>onOpenChange?.(state)}>
   <DialogTrigger asChild>
     {dialogTrigger}
   </DialogTrigger>

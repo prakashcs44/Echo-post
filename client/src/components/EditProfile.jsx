@@ -4,10 +4,10 @@ import { Button } from "./ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { FiCamera } from "react-icons/fi";
 import { clearStatus, updateProfile } from "@/redux/slices/authSlice";
-import { Avatar,AvatarImage,AvatarFallback } from "./ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 
 function EditProfile() {
-  const { userData,status,error } = useSelector((state) => state.auth);
+  const { userData, status, error } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [name, setName] = useState();
   const [email, setEmail] = useState();
@@ -15,8 +15,7 @@ function EditProfile() {
 
   const [avatar, setAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState("");
-  const [open,setOpen] = useState(false);
-
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     setName(userData?.name);
@@ -26,7 +25,7 @@ function EditProfile() {
   }, [userData]);
 
   const onAvatarChange = (ev) => {
-      const reader = new FileReader();
+    const reader = new FileReader();
 
     reader.onload = () => {
       if (reader.readyState === FileReader.DONE) {
@@ -38,43 +37,47 @@ function EditProfile() {
     reader.readAsDataURL(ev.target.files[0]);
   };
 
-  const cancelHandler = () => {
-    setName(userData?.name);
-    setEmail(userData?.email);
-    setBio(userData?.bio);
-    setAvatarPreview(userData?.avatar.url);
-    setAvatar(null);
-    setOpen(false);
-  };
+  const cancelHandler = () => {};
 
   const saveHandler = (ev) => {
     ev.preventDefault();
-    const data = {name,email,avatar,bio};
+    const data = { name, email, avatar, bio };
     dispatch(updateProfile(data));
   };
 
-
-  useEffect(()=>{
-      if(status==="fail"){
-        dispatch(clearStatus());
-      }
-      else if(status==="success"){
-        dispatch(clearStatus());
-        setOpen(false);
-      }
-  },[status])
+  useEffect(() => {
+    if (status === "fail") {
+      dispatch(clearStatus());
+    } else if (status === "success") {
+      dispatch(clearStatus());
+      setOpen(false);
+    }
+  }, [status]);
 
   return (
-    <MyDialog dialogTrigger={<Button>Edit Profile</Button>} open={open} setOpen={setOpen}>
+    <MyDialog
+      dialogTrigger={<Button>Edit Profile</Button>}
+      open={open}
+      onOpenChange={(state) => {
+        setName(userData?.name);
+        setEmail(userData?.email);
+        setBio(userData?.bio);
+        setAvatarPreview(userData?.avatar.url);
+        setAvatar(null);
+        setOpen(state);
+      }}
+    >
       <form
         className="flex flex-col items-center px-5 py-5 gap-5 bg-white rounded-lg"
         onSubmit={saveHandler}
       >
         <div className="relative">
-        <Avatar className = "size-40">
-          <AvatarImage src = {avatarPreview}/>
-          <AvatarFallback className = "text-3xl ">{userData?.name[0]}</AvatarFallback>
-        </Avatar>
+          <Avatar className="size-40">
+            <AvatarImage src={avatarPreview} />
+            <AvatarFallback className="text-3xl ">
+              {userData?.name[0]}
+            </AvatarFallback>
+          </Avatar>
           {!avatar && (
             <>
               <input
@@ -134,13 +137,8 @@ function EditProfile() {
         </div>
 
         <div className="flex justify-center gap-12 w-full max-w-sm">
-          <Button type="submit" disabled = {status==="pending"}>{status==="pending"?"Saving...":"Save Changes"}</Button>
-          <Button
-            type="button"
-            variant="destructive-outline"
-            onClick={cancelHandler}
-          >
-            Cancel
+          <Button type="submit" disabled={status === "pending"}>
+            {status === "pending" ? "Saving..." : "Save Changes"}
           </Button>
         </div>
       </form>

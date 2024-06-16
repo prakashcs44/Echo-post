@@ -31,7 +31,10 @@ function AddComment({ totalComment, postId }) {
   return (
     <MyDialog
       open={open}
-      setOpen={setOpen}
+      onOpenChange={(state)=>{
+        setOpen(state)
+        setComment("")
+      }}
       dialogTrigger={
         <Button variant="ghost" className="rounded-full space-x-2">
           <FaRegComment size={24} />

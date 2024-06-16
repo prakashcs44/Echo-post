@@ -34,6 +34,13 @@ function Post({ disableView, post }) {
           </Button>
         )}
       </header>
+      {post?.file&&(
+         <div className="px-4 py-10">
+         <img src={post?.file?.url} alt = "post file" className="w-full h-auto max-h-[60vh] object-cover"/>
+         </div>
+      )}
+      
+      
       <main className="py-6 px-4">{post.content}</main>
       <div>
         <AddLike likes={post?.likes} postId={post._id} />
