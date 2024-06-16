@@ -10,7 +10,7 @@ function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [avatar, setAvatar] = useState(null);
+  const [avatar, setAvatar] = useState();
   const [avatarPreview, setAvatarPreview] = useState("");
   const dispatch = useDispatch();
   const {isAuthenticated,loading,error} = useSelector(state=>state.auth);
@@ -31,26 +31,27 @@ function Register() {
 
   const registerHandler = async (ev) => {
      ev.preventDefault();
-     const data  = new FormData();
-     data.append("name",name);
-     data.append("email",email);
-     data.append("password",password);
-     if(avatar)
-     data.append("avatar",avatar);
+     const data = {name,email,password,avatar};
      dispatch(register(data));
      setEmail("");
      setPassword("");
      setName("");
      setAvatarPreview("");
-     setAvatar(null);
+     setAvatar();
      
   };
 
   const onAvatarChange = (ev) => {
-    const file = ev.target.files[0];
+    const reader = new FileReader();
 
-    setAvatar(file);
-    setAvatarPreview(URL.createObjectURL(file));
+    reader.onload = () => {
+      if (reader.readyState === FileReader.DONE) {
+        setAvatarPreview(reader.result);
+        setAvatar(reader.result);
+      }
+    };
+
+    reader.readAsDataURL(ev.target.files[0]);
   };
 
   return (

@@ -1,19 +1,13 @@
 const ErrorHandler = require("../utils/errorHandler.js");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const Post = require("../models/post.model");
-const fs = require("fs");
-const path = require("path");
-
+const cloudinary = require("cloudinary");
 
 
 exports.getAllPost = catchAsyncError(async (req, res, next) => {
   let posts = await Post.find().populate("user", "name avatar");
 
-  posts = JSON.parse(JSON.stringify(posts));
 
-  posts.forEach((post) => {
-    post.user.avatar = `${req.protocol}://${req.headers.host}/uploads/user_avatars/${post.user.avatar}`;
-  });
   res.status(200).json({
     success: true,
     posts,
@@ -34,17 +28,8 @@ exports.getPost = catchAsyncError(async (req, res, next) => {
             select: 'name avatar'
         }
     })
-   //same reference problem
-  post = JSON.parse(JSON.stringify(post));
-
-
-  post.user.avatar = `${req.protocol}://${req.headers.host}/uploads/user_avatars/${post.user.avatar}`;
-
-  post.comments.forEach((comment) => {
-    
-    comment.user.avatar = `${req.protocol}://${req.headers.host}/uploads/user_avatars/${comment.user.avatar}`;
-    console.log(comment.user.avatar)
-  })
+   
+ 
 
   if (!post) {
     return next(new ErrorHandler("Post not found", 404));
@@ -54,17 +39,28 @@ exports.getPost = catchAsyncError(async (req, res, next) => {
 });
 
 exports.addPost = catchAsyncError(async (req, res, next) => {
-  const { content } = req.body;
-  const file = req.file?.filename;
+  const { content,file } = req.body;
+   
+ 
+     const mycloud = await cloudinary.v2.uploader.upload(file,{
+      folder:"echo_post_user_files",
+      width:150,
+      crop:"scale"
+     })
+  
+
   let post = await Post.create({
     content,
     user: req.user._id,
-    file,
+    file:{
+      public_id:mycloud.public_id,
+      url:mycloud.secure_url
+    }
   });
 
   post = await post.populate("user", "name avatar");
 
-  post.user.avatar = `${req.protocol}://${req.headers.host}/uploads/user_avatars/${post.user.avatar}`;
+ 
   res.status(200).json({ success: true, post });
 });
 
@@ -76,12 +72,7 @@ exports.deletePost = catchAsyncError(async (req, res, next) => {
   }
 
   if (post.file) {
-    const filePath = path.resolve(
-      __dirname,
-      "../uploads/user_files",
-      post.file
-    );
-    fs.rmSync(filePath);
+    await cloudinary.v2.uploader.destroy(post.file.public_id);
   }
 
   await Post.deleteOne({ _id: postId });
@@ -90,30 +81,32 @@ exports.deletePost = catchAsyncError(async (req, res, next) => {
 });
 
 exports.updatePost = catchAsyncError(async (req, res, next) => {
-  const { postId, content } = req.body;
-  const file = req.file?.filename;
+  const { postId, content,file } = req.body;
+  
   let post = await Post.findById(postId);
   if (!post) {
     return next(new ErrorHandler("Post not found", 404));
   }
+  const updatedPost = {content};
 
   if (file && post.file) {
-    const filePath = path.resolve(
-      __dirname,
-      "../uploads/user_files",
-      post.file
-    );
-    fs.rmSync(filePath);
+    await cloudinary.v2.uploader.destroy(post.file.public_id);
+    const mycloud = await cloudinary.v2.uploader.upload(file,{
+      folder:"echo_post_user_files",
+      width:150,
+      crop:"scale"
+     })
+     updatedPost.file = {public_id:mycloud.public_id,url:mycloud.secure_url};
   }
 
   post = await Post.findByIdAndUpdate(
     postId,
-    { content, file },
+    updatedPost,
     { new: true, runValidators: true, useFindAndModify: true }
   );
 
   post = await post.populate("user", "name avatar");
-  post.user.avatar = `${req.protocol}://${req.headers.host}/uploads/user_avatars/${post.user.avatar}`;
+ 
   res.status(200).json({ success: true, post });
 });
 
@@ -127,7 +120,7 @@ exports.likePost = catchAsyncError(async (req, res, next) => {
   post.likes.push(req.user._id);
 
   await post.save();
-  post.user.avatar = `${req.protocol}://${req.headers.host}/uploads/user_avatars/${post.user.avatar}`;
+
   res.status(200).json({ success: true, post });
 });
 
@@ -142,7 +135,7 @@ exports.dislikePost  = catchAsyncError(async (req, res, next) => {
   post.likes = post.likes.filter((like)=>!like.equals(req.user._id));
  
   await post.save();
-  post.user.avatar = `${req.protocol}://${req.headers.host}/uploads/user_avatars/${post.user.avatar}`;
+  
   res.status(200).json({ success: true, post });
 });
 

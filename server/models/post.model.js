@@ -11,8 +11,14 @@ const postSchema = new Schema(
       trim: true,
     },
     file: {
-      type: String,
-      trim: true,
+      public_id:{
+        type: String,
+        
+    },
+    url:{
+        type: String,
+       
+    }
     },
   
    

@@ -68,7 +68,7 @@ function Header() {
       <Popover>
         <PopoverTrigger>
           <img
-            src={userData.avatar || defaultUserImg}
+            src={userData.avatar.url || defaultUserImg}
             alt="user"
             className=" size-12 rounded-full object-cover"
           />
@@ -76,7 +76,7 @@ function Header() {
         <PopoverContent className=" mr-4 md:mr-8 flex flex-col items-center gap-4">
           <div className="flex flex-col items-center">
             <img
-              src={userData.avatar || defaultUserImg}
+              src={userData.avatar.url || defaultUserImg}
               alt="user"
               className=" size-12 rounded-full object-cover"
             />

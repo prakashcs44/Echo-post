@@ -12,7 +12,7 @@ exports.getComment = catchAsyncError(async (req,res,next)=>{
        return next(new ErrorHandler("Comment not found",404));
     }
 
-   comment.user.avatar = `${req.protocol}://${req.headers.host}/uploads/user_avatars/${comment.user.avatar}`
+ 
    res.status(200).json({success:true,comment});
 });
 
@@ -36,8 +36,7 @@ exports.addComment = catchAsyncError(async (req,res,next)=>{
 
    await post.save();
 
-   comment.user.avatar = `${req.protocol}://${req.headers.host}/uploads/user_avatars/${comment.user.avatar}`
-
+ 
    res.status(200).json({
     success:true,
     comment,
@@ -73,7 +72,7 @@ exports.updateComment = catchAsyncError(async (req,res,next)=>{
    useFindAndModify:true
    });
     
-   comment.user.avatar = `${req.protocol}://${req.headers.host}/uploads/user_avatars/${comment.user.avatar}`
+   
    res.status(200).json({
     success:true,
     comment,

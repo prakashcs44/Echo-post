@@ -29,7 +29,14 @@ const userSchema = new Schema(
   
     },
     avatar: {
-      type: String,
+      public_id:{
+        type: String,
+        
+    },
+    url:{
+        type: String,
+       
+    }
     },
     followers: [
       {

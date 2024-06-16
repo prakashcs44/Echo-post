@@ -17,13 +17,9 @@ export const loginApi = async (data)=>{
 
 export const registerApi = async (data)=>{
     const link  = "/users/register";
-    const config = {
-        headers: {
-            "Content-Type": "multipart/form-data",
-          },
-    }
+    
     try{
-        const res =  await axiosClient.post(link,data,config);
+        const res =  await axiosClient.post(link,data);
         return res.data;
    
      }
@@ -63,13 +59,9 @@ export const getLoggedInUserApi = async ()=>{
 
 export const updateProfileApi = async (data)=>{
    const link = "/users/me/update-profile";
-   const config = {
-      headers: {
-          "Content-Type": "multipart/form-data",
-        },
-  }
+   
    try{
-      const res =  await axiosClient.put(link,data,config);
+      const res =  await axiosClient.put(link,data);
       return res.data;
  
    }

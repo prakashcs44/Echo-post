@@ -12,7 +12,7 @@ function Post({ disableView, post }) {
     <div className=" mx-auto transition-all  border pl-3 pt-2">
       <header className="flex gap-4">
         <img
-          src={post?.user.avatar || profileImg}
+          src={post?.user.avatar.url || profileImg}
           alt="user"
           className=" size-12 rounded-full object-cover"
         />

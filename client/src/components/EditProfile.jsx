@@ -21,28 +21,34 @@ function EditProfile() {
     setName(userData?.name);
     setEmail(userData?.email);
     setBio(userData?.bio);
-    setAvatarPreview(userData?.avatar);
+    setAvatarPreview(userData?.avatar.url);
   }, [userData]);
 
   const onAvatarChange = (ev) => {
-    const file = ev.target.files[0];
+      const reader = new FileReader();
 
-    setAvatar(file);
-    setAvatarPreview(URL.createObjectURL(file));
+    reader.onload = () => {
+      if (reader.readyState === FileReader.DONE) {
+        setAvatarPreview(reader.result);
+        setAvatar(reader.result);
+      }
+    };
+
+    reader.readAsDataURL(ev.target.files[0]);
   };
 
   const cancelHandler = () => {
+    setName(userData?.name);
+    setEmail(userData?.email);
+    setBio(userData?.bio);
+    setAvatarPreview(userData?.avatar.url);
+    setAvatar(null);
     setOpen(false);
   };
 
   const saveHandler = (ev) => {
     ev.preventDefault();
-    const data  = new FormData();
-    data.append("name",name);
-    data.append("email",email);
-    data.append("bio",bio);
-    if(avatar)
-    data.append("avatar",avatar);
+    const data = {name,email,avatar,bio};
     dispatch(updateProfile(data));
   };
 
@@ -74,6 +80,7 @@ function EditProfile() {
               <input
                 type="file"
                 id="avatar"
+                accept="image/*"
                 className="sr-only"
                 onChange={onAvatarChange}
               />

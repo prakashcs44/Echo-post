@@ -53,7 +53,7 @@ function Profile() {
       <div className="flex justify-between pl-2 md:px-5  py-5">
         <div className=" -translate-y-20">
           <img
-            src={user?.avatar || defaultUserImg}
+            src={user?.avatar.url || defaultUserImg}
             className="rounded-full size-24 md:size-36 object-cover"
           />
           <h1 className="font-bold text-lg">{user?.name}</h1>

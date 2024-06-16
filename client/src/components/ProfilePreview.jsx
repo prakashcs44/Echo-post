@@ -10,7 +10,7 @@ function ProfilePreview({ user, onFollowing }) {
     <div className="flex justify-between items-center px-4 py-2 border cursor-pointer hover:bg-slate-50">
       <div className="flex gap-3 items-center font-medium">
         <img
-          src={user?.avatar || defaultUserImg}
+          src={user?.avatar.url || defaultUserImg}
           className="rounded-full size-14 object-cover"
         />
         <Link to={`/user/${user?._id}`} className="hover:underline">{user?.name}</Link>
