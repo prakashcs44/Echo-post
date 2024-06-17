@@ -9,8 +9,8 @@ import { Avatar,AvatarImage,AvatarFallback } from "./ui/avatar";
 function Post({ disableView, post }) {
   
   return (
-    <div className=" mx-auto transition-all  border pl-3 pt-2">
-      <header className="flex gap-4">
+    <div className=" mx-auto transition-all  border">
+      <header className="flex gap-4 px-4 pt-4">
       <Avatar>
           <AvatarImage src = {post?.user.avatar.url}/>
           <AvatarFallback>{post?.user.name[0]}</AvatarFallback>
@@ -35,8 +35,8 @@ function Post({ disableView, post }) {
         )}
       </header>
       {post?.file&&(
-         <div className="px-4 py-10">
-         <img src={post?.file?.url} alt = "post file" className="w-full h-auto max-h-[60vh] object-cover"/>
+         <div className="py-10">
+         <img src={post?.file?.url} alt = "post file" className="w-full h-auto max-h-[85vh] object-cover"/>
          </div>
       )}
       
