@@ -15,6 +15,7 @@ import Profile from "./pages/Profile";
 import Following from "./pages/Following";
 
 import ViewPost from "./pages/ViewPost";
+import PageNotFound from "./components/PageNotFound";
 function App() {
   const { isAuthenticated, status } = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -56,6 +57,7 @@ function App() {
           </Route>
           <Route path="/post/:id" element={<ViewPost />} />
         </Route>
+        <Route path="*" element = {<PageNotFound/>}/>
       </Routes>
     </div>
   );
