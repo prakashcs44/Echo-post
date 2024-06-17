@@ -4,7 +4,9 @@ const Post = require("../models/post.model");
 const cloudinary = require("cloudinary");
 
 exports.getAllPost = catchAsyncError(async (req, res, next) => {
-  let posts = await Post.find().populate("user", "name avatar").sort({createdAt:-1});
+  let posts = await Post.find()
+    .populate("user", "name avatar")
+    .sort({ createdAt: -1 });
 
   res.status(200).json({
     success: true,
@@ -29,9 +31,7 @@ exports.getPost = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("Post not found", 404));
   }
 
-  
-    post.comments.sort((a, b) => b.createdAt - a.createdAt);
-  
+  post.comments.sort((a, b) => b.createdAt - a.createdAt);
 
   res.status(200).json({ success: true, post });
 });
@@ -43,8 +43,6 @@ exports.addPost = catchAsyncError(async (req, res, next) => {
   if (file && file !== "") {
     const mycloud = await cloudinary.v2.uploader.upload(file, {
       folder: "echo_post_user_files",
-      width: 150,
-      crop: "scale",
     });
     newPost.file = { public_id: mycloud.public_id, url: mycloud.secure_url };
   }
@@ -85,8 +83,6 @@ exports.updatePost = catchAsyncError(async (req, res, next) => {
     await cloudinary.v2.uploader.destroy(post.file.public_id);
     const mycloud = await cloudinary.v2.uploader.upload(file, {
       folder: "echo_post_user_files",
-      width: 150,
-      crop: "scale",
     });
     updatedPost.file = {
       public_id: mycloud.public_id,
