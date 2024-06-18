@@ -1,6 +1,7 @@
 const ErrorHandler = require("../utils/errorHandler.js");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const Post = require("../models/post.model");
+const Comment = require("../models/comment.model.js");
 const cloudinary = require("cloudinary");
 
 exports.getAllPost = catchAsyncError(async (req, res, next) => {
@@ -55,8 +56,10 @@ exports.addPost = catchAsyncError(async (req, res, next) => {
 });
 
 exports.deletePost = catchAsyncError(async (req, res, next) => {
-  const { postId } = req.body;
-  const post = await Post.findById(postId);
+  
+  const { id } = req.params;
+
+  const post = await Post.findById(id);
   if (!post) {
     return next(new ErrorHandler("Post not found", 404));
   }
@@ -65,9 +68,11 @@ exports.deletePost = catchAsyncError(async (req, res, next) => {
     await cloudinary.v2.uploader.destroy(post.file.public_id);
   }
 
-  await Post.deleteOne({ _id: postId });
+  await Comment.deleteMany({ _id: { $in: post.comments } });
 
-  res.status(200).json({ success: true, message: "Post deleted successfully" });
+  await Post.deleteOne({ _id: id });
+
+  res.status(200).json({ success: true, message: "Post deleted successfully",id});
 });
 
 exports.updatePost = catchAsyncError(async (req, res, next) => {

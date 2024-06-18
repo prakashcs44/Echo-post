@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { addPostApi, getAllPostApi} from "../api/postApi";
-import { ADDING_POST_FAIL, ADDING_POST_PENDING, ADDING_POST_SUCCESS, GETTING_POSTS_FAIL, GETTING_POSTS_PENDING, GETTING_POSTS_SUCCESS } from "../constants/postConstants";
+import { addPostApi, deletePostApi, getAllPostApi} from "../api/postApi";
+import { ADDING_POST_FAIL, ADDING_POST_PENDING, ADDING_POST_SUCCESS, DELETING_POST_FAIL, DELETING_POST_PENDING, DELETING_POST_SUCCESS, GETTING_POSTS_FAIL, GETTING_POSTS_PENDING, GETTING_POSTS_SUCCESS } from "../constants/postConstants";
 
 
 
 
 export const getAllPost = createAsyncThunk("post/getAllPost",getAllPostApi);
 export const addPost = createAsyncThunk("post/addPost",addPostApi);
+export const deletePost = createAsyncThunk("post/deletePost",deletePostApi);
 
 const initialState = {
   status:"idle",
@@ -45,7 +46,19 @@ const postSlice = createSlice({
             state.posts = [action.payload.post,...state.posts];
         })
         .addCase(addPost.rejected,(state,action)=>{
-            state.status = ADDING_POST_FAIL
+            state.status = ADDING_POST_FAIL;
+            state.error = action.error.message;
+        })
+        .addCase(deletePost.pending,(state,action)=>{
+            state.status = DELETING_POST_PENDING;
+        })
+        .addCase(deletePost.fulfilled,(state,action)=>{
+            state.status = DELETING_POST_SUCCESS;
+            state.posts = state.posts.filter(post=>post._id!==action.payload.id);
+        })
+        .addCase(deletePost.rejected,(state,action)=>{
+            state.status = DELETING_POST_FAIL;
+            state.error = action.error.message;
         })
 
     }

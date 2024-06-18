@@ -3,15 +3,20 @@ import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import AddComment from "./AddComment";
 import AddLike from "./AddLike";
+import DeletePost from "./DeletePost";
 import { timeAgo, dayMonthYear } from "@/helpers/dateHelper";
 import { Avatar,AvatarImage,AvatarFallback } from "./ui/avatar";
+import { useSelector } from "react-redux";
 
 function Post({ disableView, post }) {
   
+  const {userData} = useSelector(state=>state.auth);
+
   return (
     <div className=" mx-auto transition-all  border">
-      <header className="flex gap-4 px-4 pt-4">
-      <Avatar>
+      <header className="flex justify-between px-4   pt-4">
+        <div className="flex gap-4">
+        <Avatar>
           <AvatarImage src = {post?.user.avatar.url}/>
           <AvatarFallback>{post?.user.name[0]}</AvatarFallback>
         </Avatar>
@@ -28,11 +33,20 @@ function Post({ disableView, post }) {
               : timeAgo(post?.createdAt)}
           </p>
         </div>
-        {!disableView && (
-          <Button className=" ml-auto mr-10">
+        </div>
+         <div className="flex items-center gap-10">
+         {!disableView && (
+          <Button >
             <Link to={`/post/${post._id}`}>View</Link>
           </Button>
         )}
+        {
+          userData?._id===post?.user._id&&(
+             <DeletePost postId = {post?._id}/>
+          )
+        }
+         </div>
+      
       </header>
       {post?.file&&(
          <div className="py-10">

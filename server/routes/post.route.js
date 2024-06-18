@@ -4,7 +4,7 @@ const { getPost, addPost, deletePost, updatePost, likePost, getAllPost, dislikeP
 router.get("/",isUserAuthenticated,getAllPost);
 router.get("/:id",isUserAuthenticated,getPost);
 router.post("/add",isUserAuthenticated,addPost);
-router.delete("/remove",isUserAuthenticated,deletePost);
+router.delete("/remove/:id",isUserAuthenticated,deletePost);
 router.put("/update",isUserAuthenticated,updatePost);
 router.put("/like",isUserAuthenticated,likePost);
 router.put("/dislike",isUserAuthenticated,dislikePost);

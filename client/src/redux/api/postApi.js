@@ -62,3 +62,14 @@ export const dislikePostApi = async(data)=>{
     }
 }
 
+export const deletePostApi = async (postId)=>{
+    const link = `/posts/remove/${postId}`;
+    try{
+        const res = await axiosClient.delete(link);
+        return res.data;
+       }
+       catch(err){
+           throw new Error(err.response.data.message||"Something went wrong");
+       }
+
+}
