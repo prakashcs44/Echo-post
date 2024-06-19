@@ -1,7 +1,7 @@
+import PageWrapper from "@/components/layout/PageWrapper";
 import React from "react";
 import { FaExclamationTriangle } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import PageWrapper from "./layout/PageWrapper";
 
 function PageNotFound() {
   return (

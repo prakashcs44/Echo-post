@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, lazy, useEffect} from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
@@ -10,13 +10,14 @@ import SideMenu from "./components/layout/SideMenu";
 import Loader from "./components/ui/Loader";
 import { getLoggedInUser } from "./redux/slices/authSlice";
 import UserRoutes from "./components/route/UserRoutes";
-import Home from "./pages/Home";
-import Profile from "./pages/Profile";
-import Following from "./pages/Following";
+const Home = lazy(()=>import("./pages/Home"));
+const Profile = lazy(()=>import("./pages/Profile"));
+const Following = lazy(()=>import("./pages/Following"));
+const ViewPost = lazy(()=>import("./pages/ViewPost"));
+const PageNotFound = lazy(()=>import("./pages/PageNotFound"));
+const IndexPage = lazy(()=>import("./pages/IndexPage"));
 
-import ViewPost from "./pages/ViewPost";
-import PageNotFound from "./components/PageNotFound";
-import IndexPage from "./pages/IndexPage";
+
 function App() {
   const { isAuthenticated, status } = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated&&status!=="pending") {
       navigate("/login");
     }
   }, [isAuthenticated]);
@@ -44,7 +45,7 @@ function App() {
           <SideMenu />
         </div>
       )}
-
+      <Suspense fallback = {<Loader/>}>
       <Routes>
         <Route path="/" element = {<IndexPage/>}/>
         <Route path="/login" element={<Login />} />
@@ -61,6 +62,8 @@ function App() {
         </Route>
         <Route path="*" element = {<PageNotFound/>}/>
       </Routes>
+      </Suspense>
+     
     </div>
   );
 }
