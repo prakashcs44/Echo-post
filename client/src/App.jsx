@@ -16,6 +16,7 @@ import Following from "./pages/Following";
 
 import ViewPost from "./pages/ViewPost";
 import PageNotFound from "./components/PageNotFound";
+import IndexPage from "./pages/IndexPage";
 function App() {
   const { isAuthenticated, status } = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -45,6 +46,7 @@ function App() {
       )}
 
       <Routes>
+        <Route path="/" element = {<IndexPage/>}/>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
