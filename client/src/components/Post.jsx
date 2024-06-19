@@ -36,9 +36,9 @@ function Post({ disableView, post }) {
         </div>
          <div className="flex items-center gap-10">
          {!disableView && (
-          <Button >
-            <Link to={`/post/${post._id}`}>View</Link>
-          </Button>
+         
+            <Link to={`/post/${post._id}`} className="underline hover:text-blue-500">View</Link>
+          
         )}
         {
           userData?._id===post?.user._id&&(

@@ -75,13 +75,9 @@ exports.getLoggedInUserDetails = catchAsyncError(async (req, res, next) => {
 exports.getUserDetails = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
 
-  const user = await User.findById(id).select("-password").lean();
+  const user = await User.findById(id).select("-password");
 
-  let posts = await Post.find({ user: id })
-    .populate("user", "name avatar email")
-    .sort({createdAt:-1});
 
-  user.posts = posts;
 
   res.status(200).json({
     success: true,

@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import defaultCoverImg from "../assets/default_cover.jpg";
-import defaultUserImg from "../assets/default_user.jpg";
-import { Button } from "@/components/ui/button";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import Post from "@/components/Post";
-import MyDialog from "@/components/MyDialog";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getUserApi } from "@/redux/api/userApi";
 import Loader from "@/components/ui/Loader";
 import PageWrapper from "@/components/layout/PageWrapper";
@@ -15,14 +12,18 @@ import Follow from "@/components/Follow";
 import EditProfile from "@/components/EditProfile";
 import { dayMonthYear } from "@/helpers/dateHelper";
 import { Avatar,AvatarImage,AvatarFallback } from "@/components/ui/avatar";
-
+import { getAllPost,resetPosts } from "@/redux/slices/postSlice";
+import { GETTING_POSTS_PENDING } from "@/redux/constants/postConstants";
+import { Button } from "@/components/ui/button";
 function Profile() {
   const { id } = useParams();
 
   const { userData } = useSelector((state) => state.auth);
+  const {posts,hasMore,status} = useSelector(state=>state.post);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState();
-
+  const [page,setPage] = useState(1);
+  const dispatch = useDispatch();
   
 
   useEffect(() => {
@@ -39,8 +40,19 @@ function Profile() {
       }
       
     };
+     dispatch(getAllPost({user:id,page:1}));
      fetchUserData(id);
+     return ()=>{
+      dispatch(resetPosts());
+     }
   }, [id]);
+
+  const pageChange = ()=>{
+    setPage(page=>page+1);
+    dispatch(getAllPost({user:id,page:page+1}));
+ }
+
+
 
   if (loading) {
     return <Loader />;
@@ -83,10 +95,15 @@ function Profile() {
           Posts
         </h1>
         <div className=" py-5 space-y-10 w-full px-5 ">
-          {user?.posts.map(post=><Post post={post} key={post._id}/>)}
-          {user?.posts.length===0&&<h1 className='text-center font-medium text-xl py-5'>No Post Found</h1>}
+          {posts?.map(post=><Post post={post} key={post._id}/>)}
+          {posts?.length===0&&<h1 className='text-center font-medium text-xl py-5'>No Post Found</h1>}
         </div>
       </div>
+      {hasMore && (
+          <div className="flex justify-center">
+            <Button onClick = {pageChange} disabled = {status===GETTING_POSTS_PENDING}>Load more posts</Button>
+          </div>
+        )}
     </PageWrapper>
   );
 }

@@ -1,8 +1,13 @@
 import axiosClient from "@/axiosClient";
 
-export const getAllPostApi = async()=>{
-    const link  = "/posts";
+export const getAllPostApi = async({page=1,user})=>{
+    const limit = 5;
+    let link = `/posts?limit=${limit}&page=${page}`;
+    if(user){
+        link = `${link}&user=${user}`;
+    }
 
+   
    
 
     try{
@@ -11,6 +16,7 @@ export const getAllPostApi = async()=>{
     }
 
     catch(err){
+        
         throw new Error(err.response.data.message||"Something went wrong");
     }
 }

@@ -1,7 +1,7 @@
 import React from "react";
-import profileImg from "../assets/default_user.jpg";
 import { timeAgo } from "@/helpers/dateHelper";
 import { Avatar,AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Link } from "react-router-dom";
 function Comment({comment}) {
  
   
@@ -16,9 +16,9 @@ function Comment({comment}) {
         </Avatar>
        
         <div>
-          <button className=" font-bold hover:underline transition-all">
+          <Link to={`/user/${comment?.user._id}`} className=" font-bold hover:underline transition-all">
              {comment?.user.name}
-          </button>
+          </Link>
           <p>{timeAgo(comment?.createdAt)}</p>
         </div>
       </header>
