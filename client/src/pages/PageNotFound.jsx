@@ -1,4 +1,4 @@
-import PageWrapper from "@/components/layout/PageWrapper";
+import PageWrapper from "@/components/PageWrapper";
 import React from "react";
 import { FaExclamationTriangle } from "react-icons/fa";
 import { Link } from "react-router-dom";

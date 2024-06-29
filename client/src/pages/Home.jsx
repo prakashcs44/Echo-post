@@ -1,10 +1,9 @@
 import Post from "@/components/Post";
-import Loader from "@/components/ui/Loader";
+import Loader from "@/components/Loader";
 import { getAllPost,resetPosts} from "@/redux/slices/postSlice";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import noDataImg from "../assets/no_data.jpg";
-import PageWrapper from "@/components/layout/PageWrapper";
 import { Button } from "@/components/ui/button";
 import { GETTING_POSTS_PENDING } from "@/redux/constants/postConstants";
 
@@ -37,7 +36,7 @@ function Home() {
   }
 
   return (
-    <PageWrapper>
+    <div>
       <div className=" space-y-10">
         {posts.map((post) => (
           <Post post={post} key={post._id} />
@@ -48,7 +47,7 @@ function Home() {
           </div>
         )}
       </div>
-    </PageWrapper>
+    </div>
   );
 }
 

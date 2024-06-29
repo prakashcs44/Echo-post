@@ -4,17 +4,15 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Button } from "../ui/button";
+import { Button } from "./ui/button";
 import { Link} from "react-router-dom";
 import { IoExitOutline } from "react-icons/io5";
 import { MdMenu } from "react-icons/md";
-
 import SideMenu from "./SideMenu";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, clearStatus } from "@/redux/slices/authSlice";
 import toast from "react-hot-toast";
-import Loader from "../ui/Loader";
-import { Avatar,AvatarImage,AvatarFallback } from "../ui/avatar";
+import { Avatar,AvatarImage,AvatarFallback } from "./ui/avatar";
 
 function SideBar() {
   const [open, setOpen] = useState(false);
@@ -54,9 +52,7 @@ function Header() {
   }, [status]);
 
 
-  if(status==="pending"){
-    return <Loader/>
-  }
+  
 
   return (
     <div className="w-full fixed top-0 left-0 z-30 bg-white border h-14 flex items-center px-5 md:px-14 justify-between">
@@ -78,10 +74,10 @@ function Header() {
           <AvatarImage src = {userData?.avatar.url}/>
           <AvatarFallback>{userData?.name[0]}</AvatarFallback>
         </Avatar>
-            <Link to={`/user/${userData._id}`} className="font-medium hover:underline">
-              {userData.name}
+            <Link to={`/user/${userData?._id}`} className="font-medium hover:underline">
+              {userData?.name}
             </Link>
-            <p>{userData.email}</p>
+            <p>{userData?.email}</p>
           </div>
           <Button
             variant="destructive-outline"
@@ -93,7 +89,7 @@ function Header() {
             ) : (
               <>
                 <IoExitOutline size={17} />
-                <span>Logout</span>
+                <span>{status==="pending"?"Logging out..":"Logout"}</span>
               </>
             )}
           </Button>

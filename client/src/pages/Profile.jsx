@@ -5,8 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import Post from "@/components/Post";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserApi } from "@/redux/api/userApi";
-import Loader from "@/components/ui/Loader";
-import PageWrapper from "@/components/layout/PageWrapper";
+import Loader from "@/components/Loader";
 import toast from "react-hot-toast";
 import Follow from "@/components/Follow";
 import EditProfile from "@/components/EditProfile";
@@ -59,7 +58,7 @@ function Profile() {
   }
 
   return (
-    <PageWrapper>
+    <div>
       <div className=" h-48 border">
         <img src={defaultCoverImg} className="h-full w-full object-cover" />
       </div>
@@ -104,7 +103,7 @@ function Profile() {
             <Button onClick = {pageChange} disabled = {status===GETTING_POSTS_PENDING}>Load more posts</Button>
           </div>
         )}
-    </PageWrapper>
+    </div>
   );
 }
 

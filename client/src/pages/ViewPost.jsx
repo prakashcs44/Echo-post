@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import Post from "../components/Post";
 import Comment from "../components/Comment";
 import { useParams } from "react-router-dom";
-import Loader from "../components/ui/Loader";
-import PageWrapper from "@/components/layout/PageWrapper";
+import Loader from "../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { getPost } from "@/redux/slices/postSlice";
 import { GET_POSTS_PENDING } from "@/redux/constants/postConstants";
@@ -23,7 +22,7 @@ function ViewPost() {
   }
 
   return (
-    <PageWrapper>
+    <div>
       {currentPost ? (
         <>
           <Post disableView={true} post={currentPost} />
@@ -46,7 +45,7 @@ function ViewPost() {
       ) : (
         <h1 className="text-center font-medium text-xl">Post not found</h1>
       )}
-    </PageWrapper>
+    </div>
   );
 }
 

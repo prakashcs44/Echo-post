@@ -1,6 +1,5 @@
 import ProfilePreview from "@/components/ProfilePreview";
-import PageWrapper from "@/components/layout/PageWrapper";
-import Loader from "@/components/ui/Loader";
+import Loader from "@/components/Loader";
 import { getFollowersApi, getFollowingApi } from "@/redux/api/userApi";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -39,7 +38,7 @@ function Following() {
   }
 
   return (
-    <PageWrapper>
+    <div>
       <header className="flex  justify-around font-bold text-xl border h-14">
         <Link
           to={`/user/${id}/following`}
@@ -75,7 +74,7 @@ function Following() {
           </h1>
         )}
       </div>
-    </PageWrapper>
+    </div>
   );
 }
 

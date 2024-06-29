@@ -3,11 +3,11 @@ import { AiOutlineHome } from "react-icons/ai";
 import { CgProfile } from "react-icons/cg";
 import { LiaUserFriendsSolid } from "react-icons/lia";
 import { NavLink } from "react-router-dom";
-import { Button } from "../ui/button";
+import { Button } from "./ui/button";
 
-import MyDialog from "../MyDialog";
+import MyDialog from "./MyDialog";
 import { useSelector } from "react-redux";
-import AddPost from "../AddPost";
+import AddPost from "./AddPost";
 
 
 
@@ -25,12 +25,12 @@ function SideMenu() {
     {
       title: "Profile",
       icon: <CgProfile />,
-      redirect: `/user/${userData._id}`,
+      redirect: `/user/${userData?._id}`,
     },
     {
       title: "Following",
       icon: <LiaUserFriendsSolid />,
-      redirect: `/user/${userData._id}/following`,
+      redirect: `/user/${userData?._id}/following`,
     },
   ];
 
