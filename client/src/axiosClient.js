@@ -28,6 +28,9 @@ const axiosClient = axios.create({
 
   axiosClient.interceptors.response.use(
     function (response) {
+      if(response.data.token){
+        localStorage.setItem("token",response.data.token);
+      }
       return response;
     },
     function (error) {
