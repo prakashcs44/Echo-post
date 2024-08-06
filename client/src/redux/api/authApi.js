@@ -34,6 +34,7 @@ export const logoutApi = async ()=>{
     
     try{
        const res =  await axiosClient.post(link);
+       localStorage.removeItem("token");
        return res.data;
   
     }
