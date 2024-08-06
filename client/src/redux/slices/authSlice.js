@@ -27,6 +27,10 @@ const authSlice = createSlice({
         },
         updateFollowing:(state,action)=>{
             state.userData.following = action.payload;
+        },
+        setSessionExpired:(state)=>{
+            state.isAuthenticated = false;
+            state.error = "Session expired please login"
         }
     },
     extraReducers: (builder) => {
@@ -103,5 +107,5 @@ const authSlice = createSlice({
     },
 });
 
-export const { clearStatus,updateFollowing } = authSlice.actions;
+export const { clearStatus,updateFollowing,setSessionExpired } = authSlice.actions;
 export default authSlice.reducer;
