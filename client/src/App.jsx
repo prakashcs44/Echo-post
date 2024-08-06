@@ -20,7 +20,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getLoggedInUser());
+    if (localStorage.getItem("token")) dispatch(getLoggedInUser());
   }, []);
 
   useEffect(() => {
@@ -35,7 +35,6 @@ function App() {
 
   return (
     <div>
-      
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<IndexPage />} />
