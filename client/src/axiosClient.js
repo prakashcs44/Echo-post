@@ -1,6 +1,13 @@
 import axios from "axios";
+import { setSessionExpired } from "./redux/slices/authSlice";
 
 const apiUrl= import.meta.env.VITE_API_URL;
+let store;
+
+
+ export const injectStore = _store => {
+  store = _store
+}
 
 const axiosClient = axios.create({
     baseURL: apiUrl,
@@ -37,7 +44,7 @@ const axiosClient = axios.create({
      
       if (error.response && error.response.status === 401) {
         localStorage.removeItem("token");
-        window.location = '/login';
+        store.dispatch(setSessionExpired());
       }
       return Promise.reject(error);
     }
